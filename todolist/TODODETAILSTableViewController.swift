@@ -30,7 +30,7 @@ class TODODETAILSTableViewController: UITableViewController {
         super.viewDidLoad()
 
         
-        
+      
         
         if toDoItem == nil {
            toDoItem = ToDoItem(name: "", date: Date(), notes: "")
@@ -40,7 +40,7 @@ class TODODETAILSTableViewController: UITableViewController {
         noteView.text = toDoItem.notes
         
         
-        
+    
         
     }
     
