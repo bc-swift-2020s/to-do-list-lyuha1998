@@ -27,8 +27,8 @@ class TodoListViewController: UIViewController {
         tableView.delegate = self
         
         tableView.dataSource = self
-      loadData ()
-    autherizeLocalNotifications ()
+        loadData ()
+        autherizeLocalNotifications ()
         
         
         
@@ -59,7 +59,7 @@ class TodoListViewController: UIViewController {
         
         for index in 0..<toDoItems.count {
             if toDoItems[index].reminderSet {
-               let toDoItem = toDoItems[index]
+                let toDoItem = toDoItems[index]
                 toDoItems[index].notificationID = setCalendarNotification(title: toDoItem.name ,  subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
             }
         }
@@ -78,11 +78,11 @@ class TodoListViewController: UIViewController {
         //create trigger
         var dateComponents = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-    
-    // create request
+        
+        // create request
         let notificationID = UUID().uuidString
         let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
-    
+        
         UNUserNotificationCenter.current().add(request) {
             (error) in
             if let error = error {
@@ -98,8 +98,8 @@ class TodoListViewController: UIViewController {
     
     
     func loadData () {
-       let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-       let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
         
         
         guard let data = try? Data(contentsOf: documentURL) else {return}
@@ -109,7 +109,7 @@ class TodoListViewController: UIViewController {
             tableView.reloadData()
             
         } catch {
-             print("ERROR: Could not save data \(error.localizedDescription)")
+            print("ERROR: Could not save data \(error.localizedDescription)")
         }
         
         
@@ -118,18 +118,18 @@ class TodoListViewController: UIViewController {
     
     
     func saveData () {
-            let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
-            
-            let jsonEncoder = JSONEncoder()
-            let data = try?jsonEncoder.encode(toDoItems)
-            do {
-                try data?.write(to:documentURL, options: .noFileProtection) }
-            catch {
-                print("ERROR: Could not save data \(error.localizedDescription)")
-            }
-       setNotifications()
+        let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+        
+        let jsonEncoder = JSONEncoder()
+        let data = try?jsonEncoder.encode(toDoItems)
+        do {
+            try data?.write(to:documentURL, options: .noFileProtection) }
+        catch {
+            print("ERROR: Could not save data \(error.localizedDescription)")
         }
+        setNotifications()
+    }
     
     
     
@@ -198,50 +198,66 @@ class TodoListViewController: UIViewController {
     }
     
 }
-    //extension needed for protocol,
+//extension needed for protocol,
+
+
+
+extension TodoListViewController: UITableViewDelegate, UITableViewDataSource, ListTableViewCellDelegate  {
+   
     
     
-    
-extension TodoListViewController: UITableViewDelegate, UITableViewDataSource {
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return toDoItems.count
-            
+    func checkBoxToggle(sender: ListTableViewCell) {
+        
+        if let selectedIndexPath = tableView.indexPath(for: sender) {
+            toDoItems[selectedIndexPath.row].completed = !toDoItems[selectedIndexPath.row].completed
+            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+            saveData()
         }
         
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return toDoItems.count
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)as! ListTableViewCell
+              cell.delegate = self
+              cell.nameLabel.text = toDoItems[indexPath.row].name
+              
+              cell.checkBoxBotton.isSelected = toDoItems[indexPath.row].completed
+              return cell
+              
+              
+    
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-            
-            cell.textLabel?.text = toDoItems[indexPath.row].name
-            
-            
-            return cell
-        }
+       }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-           toDoItems.remove(at: indexPath.row)
+            toDoItems.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-             saveData()
+            saveData()
             
-    }
+        }
         
-
+        
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let itemToMove = toDoItems[sourceIndexPath.row]
         toDoItems.remove(at: sourceIndexPath.row)
         toDoItems.insert(itemToMove, at: destinationIndexPath.row)
-         saveData()
-            
-        }
+        saveData()
+        
     }
-    
-    
-    
-    
+}
 
-    
-    
+
+
+
+
+
+
 

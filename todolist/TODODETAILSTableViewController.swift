@@ -54,7 +54,7 @@ class TODODETAILSTableViewController: UITableViewController {
         
         
         if toDoItem == nil {
-            toDoItem = ToDoItem(name: "", date: Date().addingTimeInterval(24*60*60), notes: "", reminderSet: false)
+            toDoItem = ToDoItem(name: " ", date: Date().addingTimeInterval(24*60*60), notes: "", reminderSet: false,  completed: false )
         }
         NameField.text = toDoItem.name
         datepicker.date = toDoItem.date
@@ -68,7 +68,7 @@ class TODODETAILSTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        toDoItem = ToDoItem(name:NameField.text!, date: datepicker.date, notes: noteView.text,reminderSet:ReminderSwitch.isOn )
+        toDoItem = ToDoItem(name:NameField.text!, date: datepicker.date, notes: noteView.text,reminderSet:ReminderSwitch.isOn, completed: toDoItem.completed )
         
     }
     
