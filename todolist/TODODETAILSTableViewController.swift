@@ -53,8 +53,22 @@ class TODODETAILSTableViewController: UITableViewController {
         
         
         
+        //hide key board if we click else where!!!! UX tips!!!!
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+        
+        NameField.delegate = self
+        
+        
+        
+        
+        
+        
         if toDoItem == nil {
             toDoItem = ToDoItem(name: " ", date: Date().addingTimeInterval(24*60*60), notes: "", reminderSet: false,  completed: false )
+            NameField.becomeFirstResponder()
+            
         }
         NameField.text = toDoItem.name
         datepicker.date = toDoItem.date
@@ -62,6 +76,7 @@ class TODODETAILSTableViewController: UITableViewController {
         ReminderSwitch.isOn = toDoItem.reminderSet
         dateLabel.textColor = (ReminderSwitch.isOn ? .black : .gray)
         dateLabel.text = dateFormatter.string(from: toDoItem.date)
+        enableDisableSaveButton(text: NameField.text!)
         
         
         
@@ -72,7 +87,14 @@ class TODODETAILSTableViewController: UITableViewController {
         
     }
     
-    
+    func enableDisableSaveButton (text:String) {
+        if text .count>0 {
+           
+            SaveBottonPressed.isEnabled = true
+        } else {
+             SaveBottonPressed.isEnabled = false
+        }
+    }
     @IBAction func cancelbottonpressed(_ sender: UIBarButtonItem) {
         
         
@@ -86,6 +108,7 @@ class TODODETAILSTableViewController: UITableViewController {
     }
     
     @IBAction func reminderSwitchChanged(_ sender: Any) {
+        self.view.endEditing(true)
         dateLabel.textColor = (ReminderSwitch.isOn ? .black : .gray)
         tableView.beginUpdates()
         tableView.endUpdates()
@@ -94,9 +117,13 @@ class TODODETAILSTableViewController: UITableViewController {
     
     
     @IBAction func datePickerChanged(_ sender: Any) {
+        self.view.endEditing(true) // this line is for getting rid of keyboard when selecting amongst the calendar, same as above!!!
         dateLabel.text = dateFormatter.string(from:  (sender as AnyObject).date)
     }
     
+    @IBAction func textfieldeditingchanged(_ sender: UITextField) {
+        enableDisableSaveButton(text: sender.text!)
+    }
 }
     
 extension TODODETAILSTableViewController {
@@ -113,4 +140,13 @@ extension TODODETAILSTableViewController {
 
         }
     }
+ 
 
+//type return jum from to do item to Notes!!! UX design tips::)))
+ 
+extension TODODETAILSTableViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        noteView.becomeFirstResponder()
+        return true
+    }
+}
