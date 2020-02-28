@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import UserNotifications
+
 class ToDoItems: Codable {
     var itemsArray: [ToDoItem] = []
     
@@ -22,7 +24,7 @@ class ToDoItems: Codable {
         catch {
             print("ERROR: Could not save data \(error.localizedDescription)")
         }
-        
+        setNotifications()
         
         
     }
@@ -44,5 +46,20 @@ class ToDoItems: Codable {
                    }
                    completed()
 }
-
+    func  setNotifications()
+     {guard itemsArray.count > 0 else {
+         return
+         }
+         
+         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+         
+         for index in 0..<itemsArray.count {
+             if itemsArray[index].reminderSet {
+                 let toDoItem =  itemsArray[index]
+                itemsArray[index].notificationID = LocalNotificationManager.setCalendarNotification(title: toDoItem.name ,  subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
+             }
+         }
+         
+     }
+     
 }

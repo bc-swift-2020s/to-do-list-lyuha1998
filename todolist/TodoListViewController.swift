@@ -32,27 +32,14 @@ class TodoListViewController: UIViewController {
             self.tableView.reloadData()
         }
         
-        autherizeLocalNotifications ()
+        LocalNotificationManager.autherizeLocalNotifications()
+      
         
         
         
     }
     
-    func autherizeLocalNotifications () { UNUserNotificationCenter
-        .current().requestAuthorization(options: [.alert,.sound,.badge]) { (granted, error) in
-            guard error == nil else {
-                print("Error!")
-                return
-            }
-            if granted {
-                print("Granted")
-                
-            } else {
-                print("User has denied notifications!")
-                
-            }
-        }
-    }
+    
     
     func  setNotifications()
     {guard toDoItems.itemsArray.count > 0 else {
@@ -69,43 +56,11 @@ class TodoListViewController: UIViewController {
         }
         
     }
-    func setCalendarNotification(title:String, subtitle:String, body: String, badgeNumber: NSNumber?, sound: UNNotificationSound?, date:Date) -> String {
-        
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.subtitle = subtitle
-        content.body = body
-        content.sound = sound
-        content.badge = badgeNumber
-        
-        
-        //create trigger
-        var dateComponents = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute], from: date)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        
-        // create request
-        let notificationID = UUID().uuidString
-        let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) {
-            (error) in
-            if let error = error {
-                print("ERROR!!!")
-            } else {
-                print("Notification scheduled!")
-            }
-        }
-        return notificationID
-    }
-    
-    
-    
-
     
     
     func saveData () {
         toDoItems.saveData()
-        setNotifications()
+     
     }
     
     

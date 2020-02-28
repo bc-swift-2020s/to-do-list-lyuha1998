@@ -16,6 +16,7 @@
 		3A2BE87123EC5F130040E1AC /* TODODETAILSTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE87023EC5F130040E1AC /* TODODETAILSTableViewController.swift */; };
 		3A325F23240771E2007FB46F /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A325F22240771E2007FB46F /* ListTableViewCell.swift */; };
 		3A325F2524085E2C007FB46F /* ToDoItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A325F2424085E2C007FB46F /* ToDoItems.swift */; };
+		3A325F272409882B007FB46F /* localNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A325F262409882B007FB46F /* localNotificationManager.swift */; };
 		3A512E4923F0C04100E26736 /* todoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A512E4823F0C04100E26736 /* todoItem.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		3A2BE87023EC5F130040E1AC /* TODODETAILSTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODODETAILSTableViewController.swift; sourceTree = "<group>"; };
 		3A325F22240771E2007FB46F /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		3A325F2424085E2C007FB46F /* ToDoItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItems.swift; sourceTree = "<group>"; };
+		3A325F262409882B007FB46F /* localNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = localNotificationManager.swift; sourceTree = "<group>"; };
 		3A512E4823F0C04100E26736 /* todoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todoItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +69,7 @@
 				3A2BE85A23EB14410040E1AC /* AppDelegate.swift */,
 				3A2BE85C23EB14410040E1AC /* SceneDelegate.swift */,
 				3A2BE86E23EB4D220040E1AC /* TodoListViewController.swift */,
+				3A325F262409882B007FB46F /* localNotificationManager.swift */,
 				3A512E4823F0C04100E26736 /* todoItem.swift */,
 				3A2BE86023EB14410040E1AC /* Main.storyboard */,
 				3A325F2424085E2C007FB46F /* ToDoItems.swift */,
@@ -156,6 +159,7 @@
 				3A2BE85B23EB14410040E1AC /* AppDelegate.swift in Sources */,
 				3A2BE87123EC5F130040E1AC /* TODODETAILSTableViewController.swift in Sources */,
 				3A2BE85D23EB14410040E1AC /* SceneDelegate.swift in Sources */,
+				3A325F272409882B007FB46F /* localNotificationManager.swift in Sources */,
 				3A325F23240771E2007FB46F /* ListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
