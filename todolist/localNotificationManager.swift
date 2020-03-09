@@ -6,11 +6,11 @@
 //  Copyright © 2020 Huiyi Victoria Lyu. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import UserNotifications
 
 struct LocalNotificationManager {
-    static func autherizeLocalNotifications () { UNUserNotificationCenter
+    static func autherizeLocalNotifications (viewController: UIViewController) { UNUserNotificationCenter
         .current().requestAuthorization(options: [.alert,.sound,.badge]) { (granted, error) in
             guard error == nil else {
                 print("Error!")
@@ -22,11 +22,36 @@ struct LocalNotificationManager {
             } else {
                 print("User has denied notifications!")
                 
+                
+                DispatchQueue.main.async {
+                    viewController.oneButtonAlert(title: "User has not alllowed notifications", message: "Open the Settings to receive alerts for the reminder")
+                }
+                
             }
         }
     }
     
-    
+    static func isAuthorized (completed: @escaping (Bool) -> ()) { UNUserNotificationCenter
+          .current().requestAuthorization(options: [.alert,.sound,.badge]) { (granted, error) in
+              guard error == nil else {
+                  print("Error!")
+                completed(false)
+                  return
+              }
+              if granted {
+                  print("Granted")
+                completed(true)
+                  
+              } else {
+                  print("User has denied notifications!")
+                  completed(false)
+                  
+                
+                  
+              }
+          }
+      }
+      
     
     static func setCalendarNotification(title:String, subtitle:String, body: String, badgeNumber: NSNumber?, sound: UNNotificationSound?, date:Date) -> String {
         

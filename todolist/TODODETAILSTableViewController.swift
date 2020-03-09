@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import UserNotifications
+
+
 
 private let dateFormatter: DateFormatter = {
     print("I JUST CREATED A DATE FORMATTER!")
@@ -51,6 +54,10 @@ class TODODETAILSTableViewController: UITableViewController {
         super.viewDidLoad()
         
         
+        //setup foregrounds notifications
+        let notificationCenter = NotificationCenter.default
+        NotificationCenter.addObserver(self, selector: #selector(appActiveNotification), name: UIApplication.didBecomeActiveNotification,object: nil)
+        
         
         
         //hide key board if we click else where!!!! UX tips!!!!
@@ -70,6 +77,22 @@ class TODODETAILSTableViewController: UITableViewController {
             NameField.becomeFirstResponder()
             
         }
+        updateUserInterface()
+        
+        
+        
+    }
+    
+    
+    @objc func appActiveNotification () {
+        print("The app just came to the foreground - cool!")
+        updateReminderSwitch()
+    }
+    
+    
+    
+    
+    func updateUserInterface() {
         NameField.text = toDoItem.name
         datepicker.date = toDoItem.date
         noteView.text = toDoItem.notes
@@ -77,11 +100,28 @@ class TODODETAILSTableViewController: UITableViewController {
         dateLabel.textColor = (ReminderSwitch.isOn ? .black : .gray)
         dateLabel.text = dateFormatter.string(from: toDoItem.date)
         enableDisableSaveButton(text: NameField.text!)
-        
-        
+        updateReminderSwitch()
         
     }
     
+    
+    
+    func updateReminderSwitch() {
+        LocalNotificationManager.isAuthorized { (authorized) in
+            DispatchQueue.main.async {
+                if !authorized && self.ReminderSwitch.isOn {
+                    self.oneButtonAlert(title: "User has not allowed notifications", message: "To receive alerts for reminders, open the settings app, select TO DO LIST> NOTIFICATIONS")
+                    self.ReminderSwitch.isOn = false
+                }
+                self.view.endEditing(true)
+                self.dateLabel.textColor = (self.ReminderSwitch.isOn ? .black : .gray)
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+            }
+            
+        }
+        
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         toDoItem = ToDoItem(name:NameField.text!, date: datepicker.date, notes: noteView.text,reminderSet:ReminderSwitch.isOn, completed: toDoItem.completed )
         
@@ -89,10 +129,10 @@ class TODODETAILSTableViewController: UITableViewController {
     
     func enableDisableSaveButton (text:String) {
         if text .count>0 {
-           
+            
             SaveBottonPressed.isEnabled = true
         } else {
-             SaveBottonPressed.isEnabled = false
+            SaveBottonPressed.isEnabled = false
         }
     }
     @IBAction func cancelbottonpressed(_ sender: UIBarButtonItem) {
@@ -108,10 +148,7 @@ class TODODETAILSTableViewController: UITableViewController {
     }
     
     @IBAction func reminderSwitchChanged(_ sender: Any) {
-        self.view.endEditing(true)
-        dateLabel.textColor = (ReminderSwitch.isOn ? .black : .gray)
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        updateReminderSwitch()
         
     }
     
@@ -125,25 +162,25 @@ class TODODETAILSTableViewController: UITableViewController {
         enableDisableSaveButton(text: sender.text!)
     }
 }
-    
-extension TODODETAILSTableViewController {
-        
-        override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            switch indexPath {
-            case IndexPath(row: 1, section: 1):
-                return ReminderSwitch.isOn ?  datepicker.frame.height:0
-            case notesTextViewIndexPath:
-                return notesRowHeight
-            default:
-                return defaultRowHeight
-            }
 
+extension TODODETAILSTableViewController {
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath {
+        case IndexPath(row: 1, section: 1):
+            return ReminderSwitch.isOn ?  datepicker.frame.height:0
+        case notesTextViewIndexPath:
+            return notesRowHeight
+        default:
+            return defaultRowHeight
         }
+        
     }
- 
+}
+
 
 //type return jum from to do item to Notes!!! UX design tips::)))
- 
+
 extension TODODETAILSTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         noteView.becomeFirstResponder()

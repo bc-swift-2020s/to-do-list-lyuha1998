@@ -32,7 +32,7 @@ class TodoListViewController: UIViewController {
             self.tableView.reloadData()
         }
         
-        LocalNotificationManager.autherizeLocalNotifications()
+        LocalNotificationManager.autherizeLocalNotifications(viewController: self)
       
         
         
@@ -51,6 +51,7 @@ class TodoListViewController: UIViewController {
         for index in 0..<toDoItems.itemsArray.count {
             if toDoItems.itemsArray[index].reminderSet {
                 let toDoItem = toDoItems.itemsArray[index]
+                //????? why 
                 toDoItems.itemsArray[index].notificationID = setCalendarNotification(title: toDoItem.name ,  subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
             }
         }
