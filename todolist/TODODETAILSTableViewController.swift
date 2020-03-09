@@ -56,7 +56,7 @@ class TODODETAILSTableViewController: UITableViewController {
         
         //setup foregrounds notifications
         let notificationCenter = NotificationCenter.default
-        NotificationCenter.addObserver(self, selector: #selector(appActiveNotification), name: UIApplication.didBecomeActiveNotification,object: nil)
+         notificationCenter.addObserver(self, selector: #selector(appActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         
         
         

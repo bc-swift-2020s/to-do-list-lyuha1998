@@ -46,7 +46,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="checkBoxBotton" destination="Fr9-y9-brl" id="Ehh-Qh-nYJ"/>
-                                            <outlet property="checktoggled" destination="Fr9-y9-brl" id="LgT-wV-Dcm"/>
                                             <outlet property="nameLabel" destination="pOL-fg-KHE" id="OAG-Ly-YD2"/>
                                             <segue destination="N0M-RR-Ex1" kind="show" identifier="ShowDetails" id="PCs-i5-rjC"/>
                                         </connections>

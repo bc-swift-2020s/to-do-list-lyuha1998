@@ -52,7 +52,7 @@ class TodoListViewController: UIViewController {
             if toDoItems.itemsArray[index].reminderSet {
                 let toDoItem = toDoItems.itemsArray[index]
                 //????? why 
-                toDoItems.itemsArray[index].notificationID = setCalendarNotification(title: toDoItem.name ,  subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
+                toDoItems.itemsArray[index].notificationID = LocalNotificationManager.setCalendarNotification(title: toDoItem.name ,  subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
             }
         }
         
